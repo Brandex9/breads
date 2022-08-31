@@ -4,6 +4,8 @@ const methodOverride = require("method-override");
 // DEPENDENCIES
 const express = require("express");
 
+const mongoose = require("mongoose");
+
 // CONFIGURATION
 require("dotenv").config();
 const PORT = process.env.PORT;
@@ -24,9 +26,13 @@ app.get("/", (req, res) => {
   res.send("Welcome to an Awesome App about Breads");
 });
 
-// Breads
+// breads
 const breadsController = require("./controllers/breads_controller.js");
 app.use("/breads", breadsController);
+
+// bakers
+const bakersController = require("./controllers/bakers_controller.js");
+app.use("/bakers", bakersController);
 
 // 404 Page
 app.get("*", (req, res) => {
@@ -37,3 +43,12 @@ app.get("*", (req, res) => {
 app.listen(PORT, () => {
   console.log("listening on port", PORT);
 });
+
+mongoose.connect(
+  process.env.MONGO_URI,
+  { family: 4 },
+  function (err, connection) {
+    // connection.db('breads');
+    console.log("connected to DB!!!!!!!!");
+  }
+);
